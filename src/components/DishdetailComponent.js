@@ -8,8 +8,6 @@ class DishDetail extends Component {
 
     constructor(props) {
         super(props);
-
-
 }
 
 renderDish(dishdata) {
@@ -36,7 +34,7 @@ renderDish(dishdata) {
     }
 
 renderComments(cmtary) {
-    if (cmtary == null || cmtary == "") {
+    if (cmtary === null || cmtary === "") {
         return(
             <div></div>
         );
@@ -45,8 +43,11 @@ renderComments(cmtary) {
         return(  
             <div>
                 <ul key={cmt.id} className="list-unstyled">
-                    <li>{cmt.comment}</li>
-                    <li>-- {cmt.author},{cmt.date}</li>
+                    <li>
+                    <p>{cmt.comment}</p>
+                    <p>-- {cmt.author},{ new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(cmt.date)))}</p>
+
+                    </li>
                 </ul>
             </div>
         );
@@ -61,43 +62,33 @@ renderComments(cmtary) {
         
     }
         
-    
-
-
-
-
-
 render() {  
-    
-    // this is wrong.
-    // const comment = this.props.dish.comments.map((cmt) => {
-    //     if (cmt.comment != "" && cmt.comment != null) {
-    //         return(
-    //             this.renderComments(cmt)
-    //         );
-    //     }
-    //     else {
-    //         return(
-    //             <div></div>
-    //         );
-    //         }
-        
-    // }) ;
 
-    if (this.props.dish == null){
+    if (this.props.dish != null){
+        return (  
+            <div className="container">       
+                <div className="row"> 
+                    {this.renderDish(this.props.dish)};
+                    {this.renderComments(this.props.dish.comments)};
+                </div>
+            </div> 
+        );
+    }
+    else{
         return(<div></div>);
     }
 
-    const dishrender = this.renderDish(this.props.dish);
-    const dishcomment = this.renderComments(this.props.dish.comments);
+    // const dishrender = this.renderDish(this.props.dish);
+    // const dishcomment = this.renderComments(this.props.dish.comments);
 
-    return (          
-        <div className="row"> 
-            {dishrender}
-            {dishcomment}
-        </div>
-        
-    );
+    // return (  
+    //     <div class="container">       
+    //     <div className="row"> 
+    //         {dishrender}
+    //         {dishcomment}
+    //     </div>
+    //     </div> 
+    // );
 }
 
 }

@@ -1,51 +1,55 @@
 
-import React, { Component } from "react";
+import React from "react";
 import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from "reactstrap";
 
 
 
-class DishDetail extends Component {
 
-    constructor(props) {
-        super(props);
-}
 
-renderDish(dishdata) {
-    if (dishdata != null) 
-    {
-        return(     
+// componentDidMount(){
+//     console.log('Dishdetail Component ComponentDidMount invoked');
+// }
+
+// componentDidUpdate() {
+//     console.log('Dishdetail Component ComponentDidUpdate invoked');
+
+// }
+
+function RenderDish({dishdata}) {
+    if (dishdata != null) {
+        return (
             <div className="col-12 col-md-5 m-1">
                 <Card>
-                    <CardImg  width={"100%"} src={dishdata.image} alt={dishdata.name} />
+                    <CardImg width={"100%"} src={dishdata.image} alt={dishdata.name} />
                     <CardBody>
                         <CardTitle>{dishdata.name}</CardTitle>
                         <CardText>{dishdata.description}</CardText>
                     </CardBody>
                 </Card>
             </div>
-            );
+        );
     }
     else {
-        return(
+        return (
             <div></div>
         );
     }
 
-    }
+}
 
-renderComments(cmtary) {
+function RenderComments({cmtary}) {
     if (cmtary === null || cmtary === "") {
-        return(
+        return (
             <div></div>
         );
     }
     const comment = cmtary.map((cmt) => {
-        return(  
+        return (
             <div>
                 <ul key={cmt.id} className="list-unstyled">
                     <li>
-                    <p>{cmt.comment}</p>
-                    <p>-- {cmt.author},{ new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day:'2-digit'}).format(new Date(Date.parse(cmt.date)))}</p>
+                        <p>{cmt.comment}</p>
+                        <p>-- {cmt.author},{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(cmt.date)))}</p>
 
                     </li>
                 </ul>
@@ -53,29 +57,29 @@ renderComments(cmtary) {
         );
     });
 
-    return(
+    return (
         <div className="col-12 col-md-5 m-1">
             <h4>Comments</h4>
             {comment}
         </div>
     )
-        
-    }
-        
-render() {  
 
-    if (this.props.dish != null){
-        return (  
-            <div className="container">       
-                <div className="row"> 
-                    {this.renderDish(this.props.dish)};
-                    {this.renderComments(this.props.dish.comments)};
+}
+
+const DishDetail = (props) => {
+    console.log('Dishdetail Component render invoked');
+    if (props.dish != null) {
+        return (
+            <div className="container">
+                <div className="row">
+                    <RenderDish dishdata= {props.dish} />
+                    <RenderComments cmtary={props.dish.comments} />
                 </div>
-            </div> 
+            </div>
         );
     }
-    else{
-        return(<div></div>);
+    else {
+        return (<div></div>);
     }
 
     // const dishrender = this.renderDish(this.props.dish);
@@ -89,8 +93,6 @@ render() {
     //     </div>
     //     </div> 
     // );
-}
-
 }
 
 export default DishDetail;

@@ -38,3 +38,11 @@ address{
   background-color: #512DA8;
 }
 
+.navbar {
+  align-items: center;
+}
+
+#header-container {
+  display: flex;
+}
+

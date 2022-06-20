@@ -1,9 +1,11 @@
 import Menu from './MenuComponent';
-import { DISHES} from '../shared/dishes';
+import { DISHES } from '../shared/dishes';
 import React, { Component } from 'react';
 import DishDetail from "./DishdetailComponent";
 import Header from "./HeaderComponent";
-import Footer from "./FooterComponent"
+import Footer from "./FooterComponent";
+import Home from './HomeComponent';
+import { Route, Routes, Navigate } from 'react-router-dom';
 
 class Main extends Component {
 
@@ -12,20 +14,26 @@ class Main extends Component {
 
     this.state = {
       dishes: DISHES,
-      selectedDish: null
     };
   }
 
-  onDishSelect (dishId) {
-    this.setState({ selectedDish: dishId})
-}
+  render() {
 
-  render () {
+    const HomePage = () => {
+      return (
+        <Home />
+      );
+    }
+
     return (
       <div >
         <Header />
-        <Menu dishes= {this.state.dishes} onClick = {(dishId) => this.onDishSelect(dishId)} />
-        <DishDetail dish = {this.state.dishes.filter((dish) => dish.id === this.state.selectedDish)[0]} />
+        <Routes>
+          <Route path='/home' element={<HomePage />} />
+          <Route extact path='/menu' element={<Menu dishes ={this.state.dishes}/> } />
+          <Route path="*" element={<Navigate to="/home" replace/>} />
+          {/* <Navigate to="/home" replace /> */}
+        </Routes>
         <Footer />
       </div>
     );

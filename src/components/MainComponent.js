@@ -9,7 +9,7 @@ import Header from "./HeaderComponent";
 import Footer from "./FooterComponent";
 import Contact from './ContactComponent';
 import Home from './HomeComponent';
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes, Navigate, useParams } from 'react-router-dom';
 
 class Main extends Component {
 
@@ -35,12 +35,34 @@ class Main extends Component {
       );
     }
 
+    // const DishWithId = ({match}) => {
+    //   return (
+    //     <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(match.params.dishId, 10))[0]} 
+    //     comments = {this.state.comments.filter( (comment) => comment.dishId ===  parseInt(match.params.dishId, 10))}
+    //     />
+    //   );
+
+    // }
+
+    const DishWithId = () => {
+
+      const {dishId: dishid} = useParams()
+
+      return (
+        <DishDetail dish={this.state.dishes.filter((dish) => dish.id === parseInt(dishid, 10))[0]} 
+        comments = {this.state.comments.filter( (comment) => comment.dishId ===  parseInt(dishid, 10))}
+        />
+      );
+
+    }
+
     return (
       <div >
         <Header />
         <Routes>
           <Route path='/home' element={<HomePage />} />
           <Route extact path='/menu' element={<Menu dishes ={this.state.dishes}/> } />
+          <Route path='/menu/:dishId' element={<DishWithId />} />
           <Route extact path= '/contactus' element= {<Contact/>} />
           <Route path="*" element={<Navigate to="/home" replace/>} />
           {/* <Navigate to="/home" replace /> */}

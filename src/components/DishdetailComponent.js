@@ -4,6 +4,7 @@ import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle, Breadcrum
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
+import { baseUrl } from "../shared/baseUrl";
 
 
 const required = (val) => val && val.length;
@@ -27,7 +28,7 @@ function RenderDish({ dishdata }) {
         return (
             <div className="col-12 col-md-5 m-1">
                 <Card>
-                    <CardImg width={"100%"} src={dishdata.image} alt={dishdata.name} />
+                    <CardImg width={"100%"} src={baseUrl + dishdata.image} alt={dishdata.name} />
                     <CardBody>
                         <CardTitle>{dishdata.name}</CardTitle>
                         <CardText>{dishdata.description}</CardText>

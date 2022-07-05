@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
 import { Loading } from './LoadingComponent';
 import { baseUrl } from "../shared/baseUrl";
+import { FadeTransform, Fade, Stagger } from 'react-animation-components'
 
 
 const required = (val) => val && val.length;
@@ -27,13 +28,17 @@ function RenderDish({ dishdata }) {
     if (dishdata != null) {
         return (
             <div className="col-12 col-md-5 m-1">
-                <Card>
-                    <CardImg width={"100%"} src={baseUrl + dishdata.image} alt={dishdata.name} />
-                    <CardBody>
-                        <CardTitle>{dishdata.name}</CardTitle>
-                        <CardText>{dishdata.description}</CardText>
-                    </CardBody>
-                </Card>
+                <FadeTransform in tranformProps={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
+                    <Card>
+                        <CardImg width={"100%"} src={baseUrl + dishdata.image} alt={dishdata.name} />
+                        <CardBody>
+                            <CardTitle>{dishdata.name}</CardTitle>
+                            <CardText>{dishdata.description}</CardText>
+                        </CardBody>
+                    </Card>
+                </FadeTransform>
             </div>
         );
     }
@@ -53,14 +58,15 @@ function RenderComments({ cmtary, postComment, dishId }) {
     }
     const comment = cmtary.map((cmt) => {
         return (
-            <div>
-                <ul key={cmt.id} className="list-unstyled">
-                    <li>
+
+            <Fade in>
+                <div>
+                    <li key={cmt.id} >
                         <p>{cmt.comment}</p>
                         <p>-- {cmt.author},{new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(cmt.date)))}</p>
                     </li>
-                </ul>
-            </div>
+                </div>
+            </Fade>
         );
     });
 
@@ -68,10 +74,12 @@ function RenderComments({ cmtary, postComment, dishId }) {
         <div className="col-12 col-md-5 m-1">
             <div>
                 <h4>Comments</h4>
-                {comment}
+                <ul className="list-unstyled">
+                <Stagger in>{comment}</Stagger>
+                </ul>
             </div>
             <div>
-                <CommentForm dishId={dishId} postComment={postComment}/>
+                <CommentForm dishId={dishId} postComment={postComment} />
             </div>
         </div>
     )
@@ -80,7 +88,7 @@ function RenderComments({ cmtary, postComment, dishId }) {
 
 const DishDetail = (props) => {
     console.log('Dishdetail Component render invoked');
-    if (props.isLoading){
+    if (props.isLoading) {
         return (
             <div className="container">
                 <div className="row">
@@ -96,7 +104,7 @@ const DishDetail = (props) => {
                     <h4>{props.errMess}</h4>
                 </div>
             </div>
-        );        
+        );
     }
     else if (props.dish != null) {
         return (
@@ -156,7 +164,7 @@ class CommentForm extends Component {
         })
     }
 
-    handleSubmit(values){
+    handleSubmit(values) {
         this.toggleModal();
         this.props.postComment(this.props.dishId, values.rating, values.name, values.comment)
     }
@@ -178,31 +186,31 @@ class CommentForm extends Component {
                             <Row className="form-group ">
                                 <Label htmlFor="rating">Rating</Label>
                                 <Col>
-                                <Control.select model='.rating' name="rating" className='form-control'>
-                                    <option>1</option>
-                                    <option>2</option>
-                                    <option>3</option>
-                                    <option>4</option>
-                                    <option>5</option>
-                                </Control.select>
+                                    <Control.select model='.rating' name="rating" className='form-control'>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                    </Control.select>
                                 </Col>
                             </Row>
                             <Row className="form-group mt-3">
                                 <Label htmlFor="name">Your Name</Label>
                                 <Col>
-                                <Control.text model=".name" id='name' name='name' placeholder="Your Name" className="form-control" validators={{required, maxLength: maxLength(15), minLength: minLength(3)}}/>
-                                <Errors className='text-danger' model=".name" show="touched" messages={{required: 'Required', minLength: 'Must be greater than 2 characters', maxLength:'Must be 15 characters or less'}} />
+                                    <Control.text model=".name" id='name' name='name' placeholder="Your Name" className="form-control" validators={{ required, maxLength: maxLength(15), minLength: minLength(3) }} />
+                                    <Errors className='text-danger' model=".name" show="touched" messages={{ required: 'Required', minLength: 'Must be greater than 2 characters', maxLength: 'Must be 15 characters or less' }} />
                                 </Col>
                             </Row>
                             <Row className="form-goup mt-3">
                                 <Label htmlFor="comment">Comment</Label>
                                 <Col>
-                                <Control.textarea model=".comment" id="comment" name="comment" rows='6' className='form-control' />
+                                    <Control.textarea model=".comment" id="comment" name="comment" rows='6' className='form-control' />
                                 </Col>
                             </Row>
                             <Row className="form-group mt-3">
                                 <Col>
-                                <Button type="submit" color="primary">Submit</Button>
+                                    <Button type="submit" color="primary">Submit</Button>
                                 </Col>
                             </Row>
                         </LocalForm>
